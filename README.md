@@ -1,6 +1,6 @@
 # lionOS: Open Source Notebooks for Discord People Analytics
 
-This repository contains a series of notebooks for conducting language and communication analysis of organizational networks on discord with large language models. Built with [GPT-3](https://github.com/openai/openai-python) and the Huggingface `transformers` [library](https://github.com/huggingface/transformers).
+This repository contains a series of notebooks for conducting language and communication analysis of organizational networks on discord with large language models. Built with OpenAI's [GPT-3](https://github.com/openai/openai-python) and the Huggingface `transformers` [library](https://github.com/huggingface/transformers).
 
 ## Getting started
 
