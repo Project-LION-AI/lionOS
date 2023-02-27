@@ -1,10 +1,10 @@
 # lionOS: Open Source Notebooks for Discord People Analytics
 
-This repository contains a series of notebooks for conducting language and communication analysis of organizational networks on discord with large language models. Built with of GPT-3 and Huggingface Transformers.
+This repository contains a series of notebooks for conducting language and communication analysis of organizational networks on discord with large language models. Built with [GPT-3](https://github.com/openai/openai-python) and the Huggingface `transformers` [library](https://github.com/huggingface/transformers).
 
 ## Getting started
 
-We recommend running these notebooks on cloud platforms like [Google Colab](https://colab.research.google.com/) or Akash Network[https://akash.network/] for a decentralized option. Note that most notebooks require a GPU to run in a reasonable amount of time, so we recommend cloud platforms that come pre-installed with CUDA.
+We recommend running these notebooks on cloud platforms like [Google Colab](https://colab.research.google.com/) or [Akash Network](https://akash.network/) for a decentralized option. Note that most notebooks require a GPU to run in a reasonable amount of time, so we recommend cloud platforms that come pre-installed with CUDA.
 
 ### Running on cloud
 
