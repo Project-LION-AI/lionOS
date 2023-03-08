@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"bipartite": 0, "color": "#97c2fc", "id": "Naiem", "label": "Naiem", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Productivity", "label": "Productivity", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Well-being", "label": "Well-being", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Innovation", "label": "Innovation", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Joras", "label": "Joras", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Optimism", "label": "Optimism", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "kushal", "label": "kushal", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Communication", "label": "Communication", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "maximus", "label": "maximus", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Investing", "label": "Investing", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Identity", "label": "Identity", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Service", "label": "Service", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Engagement", "label": "Engagement", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Sentiment", "label": "Sentiment", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Teamwork", "label": "Teamwork", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Attitude", "label": "Attitude", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Nathbabu", "label": "Nathbabu", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Fundraising", "label": "Fundraising", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Mr.Nobody", "label": "Mr.Nobody", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Miscommunication", "label": "Miscommunication", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Opportunity", "label": "Opportunity", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Navigation", "label": "Navigation", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Science", "label": "Science", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Hacking", "label": "Hacking", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Resource", "label": "Resource", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Writing", "label": "Writing", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Feedback", "label": "Feedback", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Discussion", "label": "Discussion", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Task Management", "label": "Task Management", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Connections", "label": "Connections", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "saulthorin", "label": "saulthorin", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Marketing", "label": "Marketing", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Organization", "label": "Organization", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Cryptocurrency", "label": "Cryptocurrency", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Culture", "label": "Culture", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Industry", "label": "Industry", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Emotion", "label": "Emotion", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Achievement", "label": "Achievement", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Music", "label": "Music", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Travel", "label": "Travel", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Experience", "label": "Experience", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Administration", "label": "Administration", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Memory", "label": "Memory", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Data Analysis", "label": "Data Analysis", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Smart Contracts", "label": "Smart Contracts", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Gratitude", "label": "Gratitude", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Encouragement", "label": "Encouragement", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Meeting", "label": "Meeting", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Events", "label": "Events", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Research", "label": "Research", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Logistics", "label": "Logistics", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Rules", "label": "Rules", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Motivation", "label": "Motivation", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Creativity", "label": "Creativity", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "lisawocken", "label": "lisawocken", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Recruiting", "label": "Recruiting", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "DAOs", "label": "DAOs", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Forms", "label": "Forms", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Networking", "label": "Networking", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "prateek_s", "label": "prateek_s", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "0xBaer", "label": "0xBaer", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "exodus-exodus.eth", "label": "exodus-exodus.eth", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "alderj", "label": "alderj", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Kris", "label": "Kris", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Help", "label": "Help", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "timconnors | 101.xyz", "label": "timconnors | 101.xyz", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "sourov", "label": "sourov", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Philosophy", "label": "Philosophy", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "kampred", "label": "kampred", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Lotusmerciful48 MeadowLaunch", "label": "Lotusmerciful48 MeadowLaunch", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Religion", "label": "Religion", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "tesa_fc", "label": "tesa_fc", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Lety", "label": "Lety", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Time", "label": "Time", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "iSpeakNerd.eth", "label": "iSpeakNerd.eth", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Competition", "label": "Competition", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "FINE", "label": "FINE", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Security", "label": "Security", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Education", "label": "Education", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Comedy", "label": "Comedy", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Self-Improvement", "label": "Self-Improvement", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Publishing", "label": "Publishing", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Socializing", "label": "Socializing", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Note Taking", "label": "Note Taking", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Agreement", "label": "Agreement", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Planning", "label": "Planning", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Learning", "label": "Learning", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Thinking", "label": "Thinking", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Celebration", "label": "Celebration", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Branding", "label": "Branding", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "MEE6", "label": "MEE6", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Success", "label": "Success", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Og", "label": "Og", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "k3nn.eth", "label": "k3nn.eth", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Uncertainty", "label": "Uncertainty", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Time Management", "label": "Time Management", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Collaborative Project", "label": "Collaborative Project", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Erin", "label": "Erin", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Social Interaction", "label": "Social Interaction", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "kumarkazi", "label": "kumarkazi", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Iamoptimist", "label": "Iamoptimist", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Introduction", "label": "Introduction", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "MantisClone", "label": "MantisClone", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Confusion", "label": "Confusion", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Calendar Management", "label": "Calendar Management", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "jiojiu", "label": "jiojiu", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Question", "label": "Question", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "AAJ15", "label": "AAJ15", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Invalid", "label": "Invalid", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Arunacone", "label": "Arunacone", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Confirmation", "label": "Confirmation", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "cryptowitch", "label": "cryptowitch", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "DAO", "label": "DAO", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "abrarsaifi", "label": "abrarsaifi", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Friendship", "label": "Friendship", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Routines", "label": "Routines", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Tunsky107.eth", "label": "Tunsky107.eth", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Location", "label": "Location", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "rahul", "label": "rahul", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "NelsonRodMar.sismo.eth", "label": "NelsonRodMar.sismo.eth", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Night47", "label": "Night47", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Event Management", "label": "Event Management", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "tm2284807  | Sui Global", "label": "tm2284807  | Sui Global", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Cryptochayon", "label": "Cryptochayon", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "sudipta", "label": "sudipta", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Issue Resolution", "label": "Issue Resolution", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Bharathi", "label": "Bharathi", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Participation", "label": "Participation", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "wpoet", "label": "wpoet", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Volunteering", "label": "Volunteering", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Parrachia", "label": "Parrachia", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "PawelWyszomirski", "label": "PawelWyszomirski", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Job Seeking", "label": "Job Seeking", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Aphilos \u2022 Pharo", "label": "Aphilos \u2022 Pharo", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Team Building", "label": "Team Building", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "JeremyA40", "label": "JeremyA40", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "JAC | DeSciWorld", "label": "JAC | DeSciWorld", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "innov8tor3", "label": "innov8tor3", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Math", "label": "Math", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Erden", "label": "Erden", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "vendor", "label": "vendor", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "jringo_", "label": "jringo_", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Collaboration", "label": "Collaboration", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "TacoBit", "label": "TacoBit", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "liagodoyf", "label": "liagodoyf", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "moreReese", "label": "moreReese", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "DAOwl", "label": "DAOwl", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Raaaaaj", "label": "Raaaaaj", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Thardust", "label": "Thardust", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Coaching", "label": "Coaching", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Pancho", "label": "Pancho", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Support", "label": "Support", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "label": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Mahi12345", "label": "Mahi12345", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "Dimpal12345", "label": "Dimpal12345", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "mines", "label": "mines", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "pradeepbora121", "label": "pradeepbora121", "shape": "dot", "size": 10}, {"bipartite": 1, "color": "#97c2fc", "id": "Sustainability", "label": "Sustainability", "shape": "dot", "size": 10}, {"bipartite": 0, "color": "#97c2fc", "id": "sandeepdas", "label": "sandeepdas", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "Naiem", "to": "Productivity", "width": 1}, {"from": "Naiem", "to": "Well-being", "width": 1}, {"from": "Naiem", "to": "Innovation", "width": 1}, {"from": "Joras", "to": "Optimism", "width": 1}, {"from": "kushal", "to": "Communication", "width": 1}, {"from": "maximus", "to": "Communication", "width": 1}, {"from": "maximus", "to": "Investing", "width": 1}, {"from": "maximus", "to": "Identity", "width": 1}, {"from": "maximus", "to": "Service", "width": 1}, {"from": "maximus", "to": "Engagement", "width": 1}, {"from": "maximus", "to": "Sentiment", "width": 1}, {"from": "maximus", "to": "Teamwork", "width": 1}, {"from": "maximus", "to": "Attitude", "width": 1}, {"from": "Nathbabu", "to": "Fundraising", "width": 1}, {"from": "Mr.Nobody", "to": "Miscommunication", "width": 1}, {"from": "Mr.Nobody", "to": "Opportunity", "width": 1}, {"from": "Mr.Nobody", "to": "Navigation", "width": 1}, {"from": "Mr.Nobody", "to": "Science", "width": 1}, {"from": "Mr.Nobody", "to": "Hacking", "width": 1}, {"from": "Mr.Nobody", "to": "Resource", "width": 1}, {"from": "Mr.Nobody", "to": "Writing", "width": 1}, {"from": "Mr.Nobody", "to": "Feedback", "width": 1}, {"from": "Mr.Nobody", "to": "Discussion", "width": 1}, {"from": "Mr.Nobody", "to": "Innovation", "width": 1}, {"from": "Mr.Nobody", "to": "Task Management", "width": 1}, {"from": "Mr.Nobody", "to": "Connections", "width": 1}, {"from": "saulthorin", "to": "Marketing", "width": 1}, {"from": "saulthorin", "to": "Organization", "width": 1}, {"from": "saulthorin", "to": "Cryptocurrency", "width": 1}, {"from": "saulthorin", "to": "Culture", "width": 1}, {"from": "saulthorin", "to": "Industry", "width": 1}, {"from": "saulthorin", "to": "Emotion", "width": 1}, {"from": "saulthorin", "to": "Attitude", "width": 1}, {"from": "saulthorin", "to": "Achievement", "width": 1}, {"from": "saulthorin", "to": "Music", "width": 1}, {"from": "saulthorin", "to": "Well-being", "width": 1}, {"from": "saulthorin", "to": "Travel", "width": 1}, {"from": "saulthorin", "to": "Experience", "width": 1}, {"from": "saulthorin", "to": "Administration", "width": 1}, {"from": "saulthorin", "to": "Memory", "width": 1}, {"from": "saulthorin", "to": "Data Analysis", "width": 1}, {"from": "saulthorin", "to": "Smart Contracts", "width": 1}, {"from": "saulthorin", "to": "Teamwork", "width": 1}, {"from": "saulthorin", "to": "Gratitude", "width": 1}, {"from": "saulthorin", "to": "Encouragement", "width": 1}, {"from": "saulthorin", "to": "Meeting", "width": 1}, {"from": "saulthorin", "to": "Events", "width": 1}, {"from": "saulthorin", "to": "Research", "width": 1}, {"from": "saulthorin", "to": "Logistics", "width": 1}, {"from": "saulthorin", "to": "Communication", "width": 1}, {"from": "saulthorin", "to": "Rules", "width": 1}, {"from": "saulthorin", "to": "Motivation", "width": 1}, {"from": "saulthorin", "to": "Creativity", "width": 1}, {"from": "lisawocken", "to": "Recruiting", "width": 1}, {"from": "lisawocken", "to": "Organization", "width": 1}, {"from": "lisawocken", "to": "Connections", "width": 1}, {"from": "lisawocken", "to": "DAOs", "width": 1}, {"from": "lisawocken", "to": "Forms", "width": 1}, {"from": "lisawocken", "to": "Networking", "width": 1}, {"from": "lisawocken", "to": "Rules", "width": 1}, {"from": "prateek_s", "to": "Innovation", "width": 1}, {"from": "prateek_s", "to": "Cryptocurrency", "width": 1}, {"from": "0xBaer", "to": "Cryptocurrency", "width": 1}, {"from": "exodus-exodus.eth", "to": "Cryptocurrency", "width": 1}, {"from": "exodus-exodus.eth", "to": "Gratitude", "width": 1}, {"from": "alderj", "to": "Communication", "width": 1}, {"from": "Kris", "to": "Help", "width": 1}, {"from": "timconnors | 101.xyz", "to": "Industry", "width": 1}, {"from": "sourov", "to": "Philosophy", "width": 1}, {"from": "kampred", "to": "Innovation", "width": 1}, {"from": "kampred", "to": "Science", "width": 1}, {"from": "kampred", "to": "Teamwork", "width": 1}, {"from": "Lotusmerciful48 MeadowLaunch", "to": "Religion", "width": 1}, {"from": "Lotusmerciful48 MeadowLaunch", "to": "Communication", "width": 1}, {"from": "tesa_fc", "to": "Cryptocurrency", "width": 1}, {"from": "Lety", "to": "Time", "width": 1}, {"from": "iSpeakNerd.eth", "to": "Competition", "width": 1}, {"from": "iSpeakNerd.eth", "to": "Emotion", "width": 1}, {"from": "FINE", "to": "Gratitude", "width": 1}, {"from": "FINE", "to": "Security", "width": 1}, {"from": "FINE", "to": "Attitude", "width": 1}, {"from": "FINE", "to": "Education", "width": 1}, {"from": "FINE", "to": "Well-being", "width": 1}, {"from": "FINE", "to": "Comedy", "width": 1}, {"from": "FINE", "to": "Encouragement", "width": 1}, {"from": "FINE", "to": "Communication", "width": 1}, {"from": "FINE", "to": "Science", "width": 1}, {"from": "FINE", "to": "Self-Improvement", "width": 1}, {"from": "FINE", "to": "Publishing", "width": 1}, {"from": "FINE", "to": "Task Management", "width": 1}, {"from": "FINE", "to": "Optimism", "width": 1}, {"from": "FINE", "to": "Socializing", "width": 1}, {"from": "FINE", "to": "Note Taking", "width": 1}, {"from": "FINE", "to": "Agreement", "width": 1}, {"from": "FINE", "to": "Planning", "width": 1}, {"from": "FINE", "to": "Events", "width": 1}, {"from": "FINE", "to": "Learning", "width": 1}, {"from": "FINE", "to": "Organization", "width": 1}, {"from": "FINE", "to": "Thinking", "width": 1}, {"from": "FINE", "to": "Feedback", "width": 1}, {"from": "FINE", "to": "Celebration", "width": 1}, {"from": "FINE", "to": "Branding", "width": 1}, {"from": "MEE6", "to": "Success", "width": 1}, {"from": "Og", "to": "Comedy", "width": 1}, {"from": "k3nn.eth", "to": "Uncertainty", "width": 1}, {"from": "k3nn.eth", "to": "Teamwork", "width": 1}, {"from": "k3nn.eth", "to": "Time Management", "width": 1}, {"from": "k3nn.eth", "to": "Collaborative Project", "width": 1}, {"from": "Erin", "to": "Connections", "width": 1}, {"from": "Erin", "to": "Social Interaction", "width": 1}, {"from": "kumarkazi", "to": "Self-Improvement", "width": 1}, {"from": "Iamoptimist", "to": "Introduction", "width": 1}, {"from": "MantisClone", "to": "Confusion", "width": 1}, {"from": "MantisClone", "to": "Calendar Management", "width": 1}, {"from": "jiojiu", "to": "Question", "width": 1}, {"from": "AAJ15", "to": "Invalid", "width": 1}, {"from": "Arunacone", "to": "Introduction", "width": 1}, {"from": "Arunacone", "to": "Confirmation", "width": 1}, {"from": "cryptowitch", "to": "DAO", "width": 1}, {"from": "abrarsaifi", "to": "Communication", "width": 1}, {"from": "abrarsaifi", "to": "Friendship", "width": 1}, {"from": "abrarsaifi", "to": "Optimism", "width": 1}, {"from": "abrarsaifi", "to": "Routines", "width": 1}, {"from": "abrarsaifi", "to": "Social Interaction", "width": 1}, {"from": "Tunsky107.eth", "to": "Location", "width": 1}, {"from": "rahul", "to": "Innovation", "width": 1}, {"from": "NelsonRodMar.sismo.eth", "to": "Cryptocurrency", "width": 1}, {"from": "Night47", "to": "Event Management", "width": 1}, {"from": "tm2284807  | Sui Global", "to": "Communication", "width": 1}, {"from": "Cryptochayon", "to": "Cryptocurrency", "width": 1}, {"from": "sudipta", "to": "Issue Resolution", "width": 1}, {"from": "Bharathi", "to": "Participation", "width": 1}, {"from": "wpoet", "to": "Volunteering", "width": 1}, {"from": "Parrachia", "to": "Uncertainty", "width": 1}, {"from": "PawelWyszomirski", "to": "Job Seeking", "width": 1}, {"from": "Aphilos \u2022 Pharo", "to": "Team Building", "width": 1}, {"from": "JeremyA40", "to": "Communication", "width": 1}, {"from": "JAC | DeSciWorld", "to": "Communication", "width": 1}, {"from": "innov8tor3", "to": "Communication", "width": 1}, {"from": "innov8tor3", "to": "Math", "width": 1}, {"from": "innov8tor3", "to": "Thinking", "width": 1}, {"from": "Erden", "to": "DAOs", "width": 1}, {"from": "Erden", "to": "Attitude", "width": 1}, {"from": "vendor", "to": "Communication", "width": 1}, {"from": "jringo_", "to": "Social Interaction", "width": 1}, {"from": "jringo_", "to": "Encouragement", "width": 1}, {"from": "jringo_", "to": "Organization", "width": 1}, {"from": "jringo_", "to": "Collaboration", "width": 1}, {"from": "TacoBit", "to": "Cryptocurrency", "width": 1}, {"from": "liagodoyf", "to": "Branding", "width": 1}, {"from": "liagodoyf", "to": "DAOs", "width": 1}, {"from": "liagodoyf", "to": "Learning", "width": 1}, {"from": "moreReese", "to": "Learning", "width": 1}, {"from": "DAOwl", "to": "Learning", "width": 1}, {"from": "Raaaaaj", "to": "Learning", "width": 1}, {"from": "Thardust", "to": "Communication", "width": 1}, {"from": "Thardust", "to": "Coaching", "width": 1}, {"from": "Thardust", "to": "Gratitude", "width": 1}, {"from": "Pancho", "to": "Support", "width": 1}, {"from": "Pancho", "to": "Social Interaction", "width": 1}, {"from": "Pancho", "to": "Communication", "width": 1}, {"from": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "to": "Organization", "width": 1}, {"from": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "to": "Networking", "width": 1}, {"from": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "to": "Gratitude", "width": 1}, {"from": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "to": "Creativity", "width": 1}, {"from": "\ud83c\udf3bDamilola.eth\ud83c\udf3b\ud83d\udc1d", "to": "Celebration", "width": 1}, {"from": "Mahi12345", "to": "Networking", "width": 1}, {"from": "Dimpal12345", "to": "Motivation", "width": 1}, {"from": "Dimpal12345", "to": "Organization", "width": 1}, {"from": "mines", "to": "Communication", "width": 1}, {"from": "pradeepbora121", "to": "Sustainability", "width": 1}, {"from": "sandeepdas", "to": "Networking", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
