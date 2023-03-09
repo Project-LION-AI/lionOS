@@ -8,7 +8,7 @@ We recommend running these notebooks on cloud platforms like [Google Colab](http
 
 You can get started right away with our [classification notebook](https://colab.research.google.com/github/Project-LION-AI/lionOS/blob/main/lion_classification_pipeline.ipynb?authuser=1#scrollTo=cb2b33a3-8377-48fc-aaac-beb71b989cd3) or [Akash Network](https://akash.network/) in Google Colab and produce this interactive topic network.
 
-<iframe src="./network.html"></iframe>
+<iframe src="https://PROJECT-LION-AI.github.io/lionOS/"></iframe>
 
 ### Running on cloud
 
