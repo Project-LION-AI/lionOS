@@ -6,9 +6,7 @@ This repository contains a series of notebooks for conducting language and commu
 
 We recommend running these notebooks on cloud platforms like [Google Colab](https://colab.research.google.com/) or [Akash Network](https://akash.network/) for a decentralized option. Note that most notebooks require a GPU to run in a reasonable amount of time, so we recommend cloud platforms that come pre-installed with CUDA.
 
-You can get started right away with our [classification notebook](https://colab.research.google.com/github/Project-LION-AI/lionOS/blob/main/lion_classification_pipeline.ipynb?authuser=1#scrollTo=cb2b33a3-8377-48fc-aaac-beb71b989cd3) or [Akash Network](https://akash.network/) in Google Colab and produce this interactive topic network.
-
-<iframe src="https://PROJECT-LION-AI.github.io/lionOS/"></iframe>
+You can get started right away with our [classification notebook](https://colab.research.google.com/github/Project-LION-AI/lionOS/blob/main/lion_classification_pipeline.ipynb?authuser=1#scrollTo=cb2b33a3-8377-48fc-aaac-beb71b989cd3) in Google Colab.
 
 ### Running on cloud
 
